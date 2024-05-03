@@ -1,0 +1,43 @@
+.container-registration {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+  }
+
+  .container-form-registration {
+      color: black;
+  }
+
+  .register-form {
+      width: 400px;
+      padding: 50px;
+      background-color: #fff;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+
+  .icon-preview {
+      max-width: 50px;
+      max-height: 50px;
+  }
+
+  .icon-list {
+      display: flex;
+      flex-wrap: wrap;
+  }
+
+  .icon-item {
+      margin: 5px;
+      cursor: pointer;
+  }
+
+  .icon-item img {
+      max-width: 50px;
+      max-height: 50px;
+  }
+
+  .icon-item.selected {
+      border: 2px solid #D27D19;
+  }

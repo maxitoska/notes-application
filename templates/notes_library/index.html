@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+<p class="center-content">hello {{ username }}</p>
+<form
+    action="{% url 'notes_library:logout' %}?next={% url 'notes_library:login' %}?next={% url 'notes_library:index' %}"
+    method="post"
+    class="navbar-brand">
+  {% csrf_token %}
+  <button type="submit" class="btn btn-danger">Log Out</button>
+</form>
+{% endblock %}
