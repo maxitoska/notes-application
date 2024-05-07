@@ -14,7 +14,11 @@ class Categories(models.Model):
 class Notes(models.Model):
     text = models.CharField(max_length=255)
     color = models.CharField(max_length=55, default='white')
-    category = models.ForeignKey(Categories, on_delete=models.CASCADE, null=True)
+    category = models.ForeignKey(
+        Categories,
+        on_delete=models.CASCADE,
+        null=True
+    )
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
     status = models.CharField(max_length=10, choices=NOTE_STATUS_CHOICES)
@@ -41,7 +45,10 @@ def create_categories_for_new_user(sender, instance, created, **kwargs):
             "Hobby"
         ]
         for category_name in predefined_categories:
-            category = Categories.objects.create(title=category_name, user=instance)
+            category = Categories.objects.create(
+                title=category_name,
+                user=instance
+            )
             color = get_random_color()
             Colors.objects.create(color=color, category=category)
 

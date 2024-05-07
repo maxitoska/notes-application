@@ -1,5 +1,8 @@
-function fetchNotes() {
-  fetch('/get_notes')
+function fetchNotes(filters = {}) {
+  const url = new URL('/get_notes', window.location.href);
+  Object.keys(filters).forEach(key => url.searchParams.append(key, filters[key]));
+
+  fetch(url)
     .then(response => response.json())
     .then(data => {
       if (data && data.data && Array.isArray(data.data)) {
@@ -26,7 +29,7 @@ function fetchNotes() {
           const archiveIcon = document.createElement('i');
           archiveIcon.classList.add('fas', 'fa-archive', 'archive-note');
           archiveIcon.addEventListener('click', () => {
-            const noteId = newNote.dataset.noteId; // Get the note ID from data attribute
+            const noteId = newNote.dataset.noteId;
             console.log("archiveIcon clicked for note ID:", noteId);
 
             // Send fetch request to change_status/note_id/
@@ -96,6 +99,35 @@ function fetchNotes() {
     .catch(error => console.error('Error fetching notes:', error));
 }
 
+function applyFilters() {
+  console.log('Apply Filters button clicked');
+  const categoryFilter = document.getElementById('category-filter').value;
+  const dateFilter = document.getElementById('date-filter').value;
+  const wordCountFilter = document.getElementById('word-count-filter').value;
+  const uniqueWordsFilter = document.getElementById('unique-words-filter').value;
+  const statusFilter = document.getElementById('status-filter').value;
+
+  const filters = {};
+  if (categoryFilter) {
+    filters.category = categoryFilter;
+  }
+  if (dateFilter) {
+    filters.date = dateFilter;
+  }
+  if (wordCountFilter) {
+    filters.word_count = wordCountFilter;
+  }
+  if (uniqueWordsFilter) {
+    filters.unique_words = uniqueWordsFilter;
+  }
+  if (statusFilter) {
+    filters.status = statusFilter;
+  }
+
+
+  fetchNotes(filters);
+}
+
 function getCSRFToken() {
   const cookieValue = document.cookie.match(/csrftoken=([^ ;]+)/);
   return cookieValue ? cookieValue[1] : '';
@@ -120,19 +152,33 @@ function deleteNote(noteId) {
     })
     .catch(error => console.error('Error deleting note:', error));
 }
+const categoriesFilter = document.getElementById('category-filter');
 
 function fetchCategories() {
   fetch('/get_categories')
     .then(response => response.json())
     .then(data => {
-      const categoriesSelect = document.getElementById('category-select');
-      categoriesSelect.innerHTML = '';
+      const categoriesFilter = document.getElementById('category-filter');
+      const categoriesSelectCreate = document.getElementById('category-select');
+
+      // Clear existing options
+      categoriesFilter.innerHTML = '';
+      categoriesSelectCreate.innerHTML = '';
 
       // Add default option
       const defaultOption = document.createElement('option');
       defaultOption.value = '';
-      defaultOption.textContent = 'Select a category';
-      categoriesSelect.appendChild(defaultOption);
+      defaultOption.textContent = 'All Categories';
+
+      // Append default option to both filters
+      categoriesFilter.appendChild(defaultOption);
+
+        // Add default option
+      const defaultOptionSecond = document.createElement('option');
+      defaultOptionSecond.value = '';
+      defaultOptionSecond.textContent = 'All Categories';
+
+      categoriesSelectCreate.appendChild(defaultOptionSecond);
 
       // Add categories from the response
       if (data && Array.isArray(data.data)) {
@@ -140,7 +186,19 @@ function fetchCategories() {
           const option = document.createElement('option');
           option.value = category.id;
           option.textContent = category.name;
-          categoriesSelect.appendChild(option);
+
+          // Append category option to both filters
+          categoriesSelectCreate.appendChild(option);
+        });
+        }
+       if (data && Array.isArray(data.data)) {
+        data.data.forEach(category => {
+          const option = document.createElement('option');
+          option.value = category.id;
+          option.textContent = category.name;
+
+          // Append category option to both filters
+          categoriesFilter.appendChild(option);
         });
       } else {
         console.error('Invalid data format in response');
@@ -149,10 +207,13 @@ function fetchCategories() {
     .catch(error => console.error('Error fetching categories:', error));
 }
 
+
 document.addEventListener('DOMContentLoaded', () => {
   fetchNotes();
   fetchCategories();
 
+  const applyFiltersButton = document.getElementById('apply-filters');
+  applyFiltersButton.addEventListener('click', applyFilters);
   // Attach event listeners to dynamically created delete buttons
   const notesContainer = document.querySelector('.notes-container');
   notesContainer.addEventListener('click', event => {

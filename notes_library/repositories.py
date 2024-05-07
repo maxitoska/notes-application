@@ -49,7 +49,7 @@ class NotesRepository:
             print(f"Error deleting note: {e}")
             return False  # Deletion failed
 
-    def change_note(self, text: str, note_id: int) -> dict[str, str]:
+    def change_note_text(self, text: str, note_id: int) -> dict[str, str]:
         try:
             note = self.model.objects.get(id=note_id)
             note.text = text
@@ -77,12 +77,19 @@ class CategoriesRepository:
     def get_categories(self, user_id: int) -> QuerySet[Categories]:
         return self.model.objects.filter(user_id=user_id)
 
-    def get_id_by_category(self, category_name: str, user_id: int) -> QuerySet[Categories]:
+    def get_id_by_category(
+            self,
+            category_name: str,
+            user_id: int
+    ) -> QuerySet[Categories]:
         return self.model.objects.get(title=category_name, user_id=user_id)
 
     def create_new_category(self, category_name: str, user: User) -> bool:
         try:
-            category = self.model.objects.create(title=category_name, user=user)
+            category = self.model.objects.create(
+                title=category_name,
+                user=user
+            )
             color = get_random_color()
             Colors.objects.create(color=color, category=category)
             return True
@@ -95,5 +102,8 @@ class ColorsRepository:
     def __init__(self):
         self.model = Colors
 
-    def get_color_by_category_id(self, category_id: int) -> QuerySet[Colors]:
+    def get_color_by_category_id(
+            self,
+            category_id: int
+    ) -> QuerySet[Colors]:
         return self.model.objects.get(category_id=category_id)

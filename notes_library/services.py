@@ -36,24 +36,9 @@ def create_note(
     )
 
 
-def get_categories(user_id: int) -> QuerySet[Categories]:
-    repository = CategoriesRepository()
-    return repository.get_categories(user_id=user_id)
-
-
-def get_id_by_category(category_name: str, user_id: int) -> QuerySet[Categories]:
-    repository = CategoriesRepository()
-    return repository.get_id_by_category(category_name=category_name, user_id=user_id)
-
-
 def change_note_status(user_id: int, note_id: int) -> dict[str, str]:
     repository = NotesRepository()
     return repository.change_note_status(user_id=user_id, note_id=note_id)
-
-
-def get_color_by_category_id(category_id: int) -> QuerySet[Colors]:
-    repository = ColorsRepository()
-    return repository.get_color_by_category_id(category_id=category_id)
 
 
 def delete_note_by_id(note_id: int, user: User) -> bool:
@@ -61,11 +46,34 @@ def delete_note_by_id(note_id: int, user: User) -> bool:
     return repository.delete_note_by_id(note_id=note_id, user=user)
 
 
+def change_note_text(text: str, note_id: int) -> dict[str, str]:
+    repository = NotesRepository()
+    return repository.change_note_text(text=text, note_id=note_id)
+
+
+def get_categories(user_id: int) -> QuerySet[Categories]:
+    repository = CategoriesRepository()
+    return repository.get_categories(user_id=user_id)
+
+
+def get_id_by_category(
+        category_name: str, user_id: int
+) -> QuerySet[Categories]:
+    repository = CategoriesRepository()
+    return repository.get_id_by_category(
+        category_name=category_name,
+        user_id=user_id
+    )
+
+
+def get_color_by_category_id(category_id: int) -> QuerySet[Colors]:
+    repository = ColorsRepository()
+    return repository.get_color_by_category_id(category_id=category_id)
+
+
 def create_new_category(category_name: str, user: User) -> bool:
     repository = CategoriesRepository()
-    return repository.create_new_category(category_name=category_name, user=user)
-
-
-def change_note(text: str, note_id: int) -> dict[str, str]:
-    repository = NotesRepository()
-    return repository.change_note(text=text, note_id=note_id)
+    return repository.create_new_category(
+        category_name=category_name,
+        user=user
+    )

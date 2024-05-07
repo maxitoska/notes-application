@@ -21,7 +21,11 @@ urlpatterns = [
     path('delete_note/<int:note_id>/', delete_note_view, name='delete_note'),
     path('change_note/<int:note_id>/', change_note_view, name='change_note'),
     path('create_category/', create_category_view, name='create_category'),
-    path('change_status/<int:note_id>/', change_status_view, name='change_status'),
+    path(
+        'change_status/<int:note_id>/',
+        change_status_view,
+        name='change_status'
+    ),
 
 ]
 app_name = "notes_library"
