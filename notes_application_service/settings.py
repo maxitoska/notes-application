@@ -27,7 +27,7 @@ SECRET_KEY = os.getenv("DJANGO_SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ["notes-application-qlmn.onrender.com"]
+ALLOWED_HOSTS = ["127.0.0.1", "notes-application-qlmn.onrender.com"]
 
 # Application definition
 
