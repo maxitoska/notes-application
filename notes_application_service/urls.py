@@ -17,11 +17,8 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 
-from notes_library.views import register_request
-
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path("register/", register_request, name="register"),
     path("accounts/", include("django.contrib.auth.urls")),
     path("", include("notes_library.urls", namespace="notes_library")),
 

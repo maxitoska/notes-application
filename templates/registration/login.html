@@ -1,6 +1,10 @@
 {% extends "base.html" %}
 {% load crispy_forms_filters %}
 {% block content %}
+<div class="header">
+  <a href="{% url 'notes_library:register' %}" class="btn btn-primary">Register</a>
+  <a href="{% url 'notes_library:login' %}" class="btn btn-success">Login</a>
+</div>
 <div class="container-login">
   <br>
   <h1 class="center-content login-name">Login</h1>

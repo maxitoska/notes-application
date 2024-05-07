@@ -1,12 +1,72 @@
 {% extends "base.html" %}
 {% load static %}
 {% block content %}
-<p class="center-content">hello {{ username }}</p>
-<form
-    action="{% url 'notes_library:logout' %}?next={% url 'notes_library:login' %}?next={% url 'notes_library:index' %}"
-    method="post"
-    class="navbar-brand">
-  {% csrf_token %}
-  <button type="submit" class="btn btn-danger">Log Out</button>
-</form>
+{% if user.is_authenticated %}
+<div class="header">
+  <p class="user-name">{{ user.username }}</p>
+  <form action="{% url 'notes_library:logout' %}?next={% url 'notes_library:index' %}" method="post"
+        class="navbar-brand">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-danger">Log Out</button>
+  </form>
+</div>
+<div class="container">
+  <div class="title">Notes Application</div>
+
+  <div class="notes-section">
+    <div class="section">
+      <h2>Your Notes</h2>
+      <div class="notes-container">
+
+      </div>
+      <div class="add-new-note">
+        <button type="button" class="btn btn-main" id="create-note-button">＋ Create a new note</button>
+      </div>
+
+      <form id="create-note-form" style="display: none;">
+        <textarea name="note_text" class="form-control" placeholder="Enter your note text"></textarea>
+
+        <select id="category-select" name="category" class="form-control">
+          <option value="">Select a category</option>
+          <option value="Study">Study</option>
+          <option value="Work">Work</option>
+          <option value="Daily tasks">Daily tasks</option>
+          <option value="Personal notes">Personal notes</option>
+          <option value="Shopping">Shopping</option>
+          <option value="Events">Events</option>
+          <option value="Travel">Travel</option>
+          <option value="Health">Health</option>
+          <option value="Finances">Finances</option>
+          <option value="Hobby">Hobby</option>
+        </select>
+
+        <input type="text" name="new_category" class="form-control" placeholder="Enter new category name"
+               style="display: none;">
+        <button type="submit" class="btn btn-primary">Create Note</button>
+        <button type="button" class="btn btn-secondary" id="cancel-create-note">Cancel</button>
+      </form>
+      <div class="add-new-category">
+        <button type="button" class="btn btn-main" id="create-new-category">＋ Create a new category</button>
+      </div>
+      <form id="create-category-form" style="display: none;">
+        <textarea name="category_text" class="form-control" placeholder="Enter new category name"></textarea>
+
+        <button type="submit" class="btn btn-primary">Create Category</button>
+        <button type="button" class="btn btn-secondary" id="cancel-create-category">Cancel</button>
+      </form>
+    </div>
+  </div>
+</div>
+{% else %}
+<div class="header">
+  <a href="{% url 'notes_library:register' %}" class="btn btn-primary">Register</a>
+  <a href="{% url 'notes_library:login' %}" class="btn btn-success">Login</a>
+</div>
+<div class="container">
+  <h1>Welcome to the Notes Application</h1>
+  <p>To use our services, please <a href="{% url 'notes_library:register' %}">register</a> or <a
+      href="{% url 'notes_library:login' %}">login</a>.</p>
+</div>
+{% endif %}
+<script src="{% static 'js/script.js' %}"></script>
 {% endblock %}

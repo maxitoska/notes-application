@@ -3,9 +3,10 @@
 {% load crispy_forms_filters %}
 {% block content %}
 
-
-<!-- Register -->
-
+<div class="header">
+  <a href="{% url 'notes_library:register' %}" class="btn btn-primary">Register</a>
+  <a href="{% url 'notes_library:login' %}" class="btn btn-success">Login</a>
+</div>
 <div class="container-registration py-5">
   <h1 class="center-content theme-toggle">Register</h1>
   <p class="text-center">If you already have an account, <a
@@ -23,7 +24,7 @@
       </div>
 
       <div class="center-content">
-        <button class="btn btn-dark center-content" type="submit">Register
+        <button class="register-btn" type="submit">Register
         </button>
       </div>
     </form>
@@ -44,9 +45,4 @@
 
   </div>
 </div>
-
-<style>
-
-
-</style>
 {% endblock %}
